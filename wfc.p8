@@ -3,10 +3,7 @@ version 8
 __lua__
 
 log10_table = {
- 0, 0.3, 0.475,
- 0.6, 0.7, 0.775,
- 0.8375, 0.9, 0.95, 1
-}
+ -6.9,-2.197,-1.504,-1.099,-0.811,-0.588,-0.405,-0.251,-0.118,0.000}
 
 function random_indice(ar)
   return flr(rnd(count(ar))+1)
@@ -301,6 +298,8 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
       end
     end
 
+
+
     if (argminx == -1 and argminy == -1) return true
 
     for j=1,t do
@@ -343,7 +342,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
         if (wave[x][y][j]) then
           tcnt += 1
           _c = patterns[j][1]
-          pset(x,y+60,tcnt)
+          pset(x,y+60,_c) -- if (rnd(10) < 3) 
         end
       end
     end
@@ -389,6 +388,7 @@ function _draw()
       pset(x,y,training[y][x])
     end
   end
+
   model(training)
   --print("?",1,60,3)
   --print_table()

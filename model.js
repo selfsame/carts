@@ -196,3 +196,12 @@ Model.prototype.clear = function () {
 };
 
 module.exports = Model;
+
+function logstring (max, cnt){
+    var s = ""
+    for (var i = 0; i <= cnt; i++) {
+        var n = max*(i/cnt)
+        s += Math.log(n).toFixed(3)+","
+    }
+    return s
+}
