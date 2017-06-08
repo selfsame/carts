@@ -2,12 +2,10 @@ pico-8 cartridge // http://www.pico-8.com
 version 8
 __lua__
 
-log10_table = {
- -6.9,-2.197,-1.504,-1.099,-0.811,-0.588,-0.405,-0.251,-0.118,0.000}
-
-function random_indice(ar)
-  return flr(rnd(count(ar))+1)
-end
+log10_table = { 
+  0, 0.3, 0.475,
+ 0.6, 0.7, 0.775,
+ 0.8375, 0.9, 0.95, 1}
 
 function log10(n)
  if (n < 1) return 0
@@ -18,6 +16,16 @@ function log10(n)
  end
  return log10_table[flr(n)] + t
 end
+
+function log(n)
+  return log10(1)/log10(n)
+end
+
+function random_indice(ar)
+  return flr(rnd(count(ar))+1)
+end
+
+
 
 function array(n)
   local a = {}
@@ -51,7 +59,7 @@ end
 function model(input, n, width, height, periodic_input, periodic_output, symmetry, ground)
   local n = n or 2
   local symmetry = symmetry or 1
-  local ground = ground or 0
+  local ground = ground or 1
   local fmx = width or 10
   local fmy = height or 10
   local smx = #input[1]
@@ -97,7 +105,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
       res += p[#p-i+1]*power
       power *= c
     end
-    return res
+    return res-120 -- why is this 120??
   end
 
   local pattern_from_index = function(ind)
@@ -105,7 +113,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
     local power = w
     local res = array(n*n)
     for i=1,#res do
-      power /= c
+      power = power/c
       local cnt = 0
       while (residue >= power) do
         residue -= power
@@ -134,7 +142,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
       print_pattern(ps[1],x*5+20,y*5)
 
       for k=1,symmetry do
-        local ind = index(ps[k])
+        local ind = index(ps[k]) + 1
         if (weights[ind]) then
           weights[ind] += 1
         else
@@ -211,8 +219,8 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
       for y=1,fmy do
         if (changes[x][y]) then
           changes[x][y] = false
-          for dx=(-n+1),n do
-            for dy=(-n+1),n do
+          for dx=(-n+1),n-1 do
+            for dy=(-n+1),n-1 do
               local sx = x+dx
               local sy = y+dy
               if (sx < 1) then sx += fmx elseif (sx > fmx) then sx -= fmx end
@@ -222,7 +230,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
                 for j=1,t do
                   if (allowed[j]) then
                     local b = false
-                    prop = propagator[j][n-1-dx][n-1-dy]
+                    prop = propagator[j][n-dx][n-dy]
                     for i=1,#prop do
                       if (not b) then
                         b = wave[x][y][prop[i]]
@@ -282,13 +290,13 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
           for j=1,t do
             distribution[j] /= sum
           end
-          entropy = 0
+          entropy = 0.001
           for i=1,#distribution do
             if (distribution[i] > 0) then
               entropy += -distribution[i] * log10(distribution[i])
             end
           end
-          noise = 0.000001 * rnd(1)
+          noise = 0.0001 * rnd(1)
           if (entropy > 0 and entropy + noise < min) then
             min = entropy + noise
             argminx = x
@@ -317,7 +325,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   end
 
   --clear()
-  for i=1,20 do
+  for i=1,1 do
     observe()
     while propagate() do end
   end
@@ -341,11 +349,17 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
       for j=1,t do 
         if (wave[x][y][j]) then
           tcnt += 1
-          _c = patterns[j][1]
+          _c = colors[patterns[j][1]]
           pset(x,y+60,_c) -- if (rnd(10) < 3) 
         end
       end
     end
+  end
+  print(table_str(propagator[1][1][1]), 0,100,13)
+  print(pair_str(weights), 0,120,12)
+  print(table_str(ordering), 0,110,11)
+  for i=1,#patterns do
+    print(table_str(patterns[i]), 60,30+i*8,9)
   end
 
   return patterns[1][1]
@@ -361,21 +375,29 @@ end
 
 
 training = {
-{4,2,1,2,2},
-{2,2,1,2,2},
-{1,1,3,1,1},
-{2,2,1,4,4},
-{2,2,1,4,2}}
+{8,8,9,8,8,8},
+{8,8,9,8,8,8},
+{9,9,9,8,9,9},
+{8,8,8,8,9,8},
+{8,8,9,9,9,8},
+{8,8,9,8,8,8}}
 
 
-function print_table(t)
+function table_str(t)
   local s = "{"
   for i in all(t) do
     s = s..i..","
   end
-  print(s.."}")
+  return s.."}"
 end
 
+function pair_str(t)
+  local s = ""
+  for k,v in pairs(t) do
+    s = s.."("..k..","..v..")"
+  end
+  return s..""
+end
 
 function _update60()
 
@@ -390,8 +412,14 @@ function _draw()
   end
 
   model(training)
+
+  -- print("..")
+  -- for i=-2+1,2-1 do
+  --   print(i)
+  -- end
   --print("?",1,60,3)
   --print_table()
+
   
 end
 
