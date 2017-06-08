@@ -178,14 +178,15 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
     end
   end
 
-  local agrees = function(p1,p2,dx,dy)
+  agrees = function(p1,p2,dx,dy) -- this is bad
     local xmin = (dx < 0) and 0 or dx
     local xmax = (dx < 0) and (dx+n) or n
     local ymin = (dy < 0) and 0 or dy
     local ymax = (dy < 0) and (dy+n) or n
+
     for y=ymin,ymax-1 do
       for x=xmin,xmax-1 do
-        if (p1[(x+n*y)+1] != p2[(x-dx+n*(y-dy))+1]) return false
+        if (p1[(x+n*y)] != p2[(x-dx+n*(y-dy))]) return false
       end
     end
     return true
@@ -341,8 +342,8 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   end 
 
   print("t "..t,60,1,10)
-  print("w "..truecount(wave[2][2]),60,9,10)
-
+  --print("w "..truecount(wave[2][2]),60,9,10)
+  
   for x=1,fmx do
     for y=1,fmy do
       local tcnt = 0
@@ -355,11 +356,22 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
       end
     end
   end
-  print(table_str(propagator[1][1][1]), 0,100,13)
+  
+  for i=1,#propagator[2][2] do
+    --print(table_str(propagator[2][2][i]), 60,10+i*7,13)
+  end
+
+  z = 0
+  for x = -1,1 do
+  for y = -1,1 do
+  z += 1
+  print(x..","..y,90,9+(z*7),15)
+  print(agrees({1,1,1,0},{1,1,1,0},x,y),60,9+(z*7),10)
+  end end
   print(pair_str(weights), 0,120,12)
   print(table_str(ordering), 0,110,11)
   for i=1,#patterns do
-    print(table_str(patterns[i]), 60,30+i*8,9)
+    print(table_str(patterns[i]), 20,30+i*8,9)
   end
 
   return patterns[1][1]
