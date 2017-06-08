@@ -2,6 +2,7 @@ pico-8 cartridge // http://www.pico-8.com
 version 8
 __lua__
 
+-- 0.05555555555555555 to 1
 log10_table = { 
   0, 0.3, 0.475,
  0.6, 0.7, 0.775,
