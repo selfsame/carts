@@ -4,7 +4,7 @@ __lua__
 
 
 n = 2
-
+c = 2
 
 function agrees(p1,p2,dx,dy) -- this is bad
   local xmin = (dx < 0) and 0 or dx
@@ -21,6 +21,16 @@ function agrees(p1,p2,dx,dy) -- this is bad
   return true
 end
 
+function index (p)
+    local res = 0
+    local power = 1
+    for i=0,#p-1 do
+      res += p[#p-1-i+1]*power
+      power *= c
+    end
+    return res -- why is this 120??
+  end
+
 
 cls()
 z = 0
@@ -34,15 +44,16 @@ end end
 
 
 
-for x=1,(2*2-1) do
- print(x)
-end
+-- for x=1,(2*2-1) do
+--  print(x)
+-- end
 
 
 
 
-
-
+print(index({0,0,0,0}))
+print(index({0,1,0,1}))
+print(index({1,1,0,0}))
 
 
 

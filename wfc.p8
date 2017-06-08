@@ -60,15 +60,29 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   local n = n or 2
   local symmetry = symmetry or 1
   local ground = ground or 1
-  local fmx = width or 10
-  local fmy = height or 10
+  local fmx = width or 15
+  local fmy = height or 15
   local smx = #input[1]
   local smy = #input
   local colors = {}
-  grideach(input, function(c) if (not contains(colors, c)) then add(colors,c) end end)
+  local colormap = {}
+  grideach(input, function(c) 
+    if (not contains(colors, c)) then 
+      colormap[c] = #colors
+      add(colors,c) 
+      
+    end 
+  end)
   local c = #colors
   local w = c^(n*n)
   if (w == 0) return "error: exceeded numeric max"
+
+  local print_pattern = function(p,x,y)
+    pset(x,y,colors[p[1]+1])
+    pset(x+1,y,colors[p[2]+1])
+    pset(x,y+1,colors[p[3]+1])
+    pset(x+1,y+1,colors[p[4]+1])
+  end
 
   local pattern = function(f)
     local res = array(n*n)
@@ -82,7 +96,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   
   local pattern_from_sample = function(x,y)
     return pattern(function(dx,dy)
-        return input[((x + dx) % smx)+1][((y + dy) % smy)+1]
+        return colormap[input[((x + dx) % smx)+1][((y + dy) % smy)+1]]
       end)
   end
 
@@ -101,11 +115,11 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   local index = function(p)
     local res = 0
     local power = 1
-    for i=1,#p do
-      res += p[#p-i+1]*power
+    for i=0,#p-1 do
+      res += p[#p-1-i+1]*power
       power *= c
     end
-    return res-120 -- why is this 120??
+    return res -- why is this 120??
   end
 
   local pattern_from_index = function(ind)
@@ -127,6 +141,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   local weights = {}
   local ordering = {}
 
+  zz = 0
   for y=0,smy-1 do
     for x=0,smx-1 do
       local ps = array(8)
@@ -142,12 +157,15 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
       print_pattern(ps[1],x*5+20,y*5)
 
       for k=1,symmetry do
-        local ind = index(ps[k]) + 1
-        if (weights[ind]) then
-          weights[ind] += 1
+        local ind = index(ps[k])
+
+        if (weights[ind+1]) then
+          weights[ind+1] += 1
         else
-          add(ordering,ind)
-          weights[ind] = 1
+          zz += 1
+          print(ind.." "..table_str(ps[k]), 64, 40+zz*7, 2)
+          add(ordering,ind) -- bad?
+          weights[ind+1] = 1
         end
       end
     end
@@ -160,7 +178,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   local propagator = array(t)
   for i=1,t do
     local w = ordering[i]
-    patterns[i] = pattern_from_index(w)
+    patterns[i] = pattern_from_index(w) -- bad
     stationary[i] = weights[w]
   end
 
@@ -295,7 +313,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
           entropy = 0.001
           for i=1,#distribution do
             if (distribution[i] > 0) then
-              entropy += -distribution[i] * log10(distribution[i])
+              entropy += 0.0001 * rnd(1) -- -distribution[i] * log10(distribution[i])
             end
           end
           noise = 0.0001 * rnd(1)
@@ -327,7 +345,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   end
 
   --clear()
-  for i=1,1 do
+  for i=1,2 do
     observe()
     while propagate() do end
   end
@@ -343,7 +361,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   end 
 
   print("t "..t,60,1,10)
-  print(table_str(colors),60,9,7)
+  print(w,60,9,7)
   
   for x=1,fmx do
     for y=1,fmy do
@@ -385,12 +403,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   return patterns[1][1]
 end 
 
-function print_pattern(p,x,y)
-  pset(x,y,p[1])
-  pset(x+1,y,p[2])
-  pset(x,y+1,p[3])
-  pset(x+1,y+1,p[4])
-end
+
 
 
 
