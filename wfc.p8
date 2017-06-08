@@ -178,15 +178,16 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
     end
   end
 
-  agrees = function(p1,p2,dx,dy) -- this is bad
+  agrees = function(p1,p2,dx,dy) 
     local xmin = (dx < 0) and 0 or dx
     local xmax = (dx < 0) and (dx+n) or n
     local ymin = (dy < 0) and 0 or dy
     local ymax = (dy < 0) and (dy+n) or n
-
+    --print(xmin..","..xmax..","..ymin..","..ymax)
     for y=ymin,ymax-1 do
       for x=xmin,xmax-1 do
-        if (p1[(x+n*y)] != p2[(x-dx+n*(y-dy))]) return false
+        --print(x..","..y..":"..(x+n*y).." "..(x-dx+n*(y-dy)))
+        if (p1[(x+n*y)+1] != p2[(x-dx+n*(y-dy))+1]) return false
       end
     end
     return true
@@ -199,7 +200,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
       for y=1,(2*n-1) do
         local list = {}
         for j2=1,t do
-          if (agrees(patterns[j],patterns[j2], x-n+1, y-n+1)) add(list, j2)
+          if (agrees(patterns[j],patterns[j2], x-n, y-n)) add(list, j2) -- maybe wrong
         end
         propagator[j][x][y] = array(#list)
         for k=1,#list do
@@ -342,7 +343,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   end 
 
   print("t "..t,60,1,10)
-  --print("w "..truecount(wave[2][2]),60,9,10)
+  print(table_str(colors),60,9,7)
   
   for x=1,fmx do
     for y=1,fmy do
@@ -350,24 +351,31 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
       for j=1,t do 
         if (wave[x][y][j]) then
           tcnt += 1
-          _c = colors[patterns[j][1]]
-          pset(x,y+60,_c) -- if (rnd(10) < 3) 
+          _c = colors[patterns[j][1]+1]
+          pset(x,y+60,tcnt) -- if (rnd(10) < 3) 
         end
       end
     end
   end
-  
-  for i=1,#propagator[2][2] do
-    --print(table_str(propagator[2][2][i]), 60,10+i*7,13)
+  for x=1,fmx do
+    for y=1,fmy do
+      local tcnt = 0
+      for j=1,t do 
+        if (wave[x][y][j]) then
+          tcnt += 1
+          _c = colors[patterns[j][1]]
+          pset(x,y+30,_c) -- if (rnd(10) < 3) 
+        end
+      end
+    end
   end
 
-  z = 0
-  for x = -1,1 do
-  for y = -1,1 do
-  z += 1
-  print(x..","..y,90,9+(z*7),15)
-  print(agrees({1,1,1,0},{1,1,1,0},x,y),60,9+(z*7),10)
-  end end
+
+  for i=1,#propagator[1][1] do
+    print(table_str(propagator[1][1][i]), 60,10+i*7,13)
+  end
+
+
   print(pair_str(weights), 0,120,12)
   print(table_str(ordering), 0,110,11)
   for i=1,#patterns do
