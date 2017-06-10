@@ -110,7 +110,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
     local res = array(n*n)
     for y=0,n-1 do
       for x=0,n-1 do
-        res[(x+y*n)+1] = f(x,y)
+        res[(y+x*n)+1] = f(x,y)
       end
     end
     return res
@@ -181,13 +181,13 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
       for k=1,symmetry do
         local ind = index(ps[k])
 
-        if (weights[ind+1]) then
-          weights[ind+1] += 1
+        if (weights[ind]) then
+          weights[ind] += 1
         else
           zz += 1
           print(ind.." "..table_str(ps[k]), 64, 40+zz*7, 2)
           add(ordering,ind) -- bad?
-          weights[ind+1] = 1
+          weights[ind] = 1
         end
       end
     end
@@ -223,10 +223,8 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
     local xmax = (dx < 0) and (dx+n) or n
     local ymin = (dy < 0) and 0 or dy
     local ymax = (dy < 0) and (dy+n) or n
-    --print(xmin..","..xmax..","..ymin..","..ymax)
     for y=ymin,ymax-1 do
       for x=xmin,xmax-1 do
-        --print(x..","..y..":"..(x+n*y).." "..(x-dx+n*(y-dy)))
         if (p1[(x+n*y)+1] != p2[(x-dx+n*(y-dy))+1]) return false
       end
     end
@@ -240,7 +238,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
       for y=1,(2*n-1) do
         local list = {}
         for j2=1,t do
-          if (agrees(patterns[j],patterns[j2], x-n, y-n)) add(list, j2) -- maybe wrong
+          if (agrees(patterns[j],patterns[j2], x-n, y-n)) add(list, j2-1) -- maybe wrong
         end
         propagator[j][x][y] = array(#list)
         for k=1,#list do
@@ -275,7 +273,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
                     prop = propagator[j][n-dx][n-dy]
                     for i=1,#prop do
                       if (not b) then
-                        b = wave[x][y][prop[i]]
+                        b = wave[x][y][prop[i]+1] -- index??
                       end
                     end
                     if (not b) then
@@ -367,7 +365,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   end
 
   --clear()
-  for i=1,10 do
+  for i=1,5 do
     observe()
     while propagate() do end
   end
@@ -436,6 +434,13 @@ training = {
 {8,8,8,8,9,8},
 {8,8,9,9,9,8},
 {8,8,9,8,8,8}}
+-- training = {
+-- {8,7,8,7,8,7},
+-- {8,7,8,7,8,7},
+-- {8,7,8,7,8,7},
+-- {8,7,8,7,8,7},
+-- {8,7,8,7,8,7},
+-- {8,7,8,7,8,7}}
 
 
 function table_str(t)
