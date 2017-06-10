@@ -81,6 +81,7 @@ end
 function model(input, n, width, height, periodic_input, periodic_output, symmetry, ground)
   local n = n or 2
   local symmetry = symmetry or 1
+  local periodic_output = true
   local ground = ground or 1
   local fmx = width or 15
   local fmy = height or 15
@@ -265,7 +266,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
               local sy = y+dy
               if (sx < 1) then sx += fmx elseif (sx > fmx) then sx -= fmx end
               if (sy < 1) then sy += fmy elseif (sy > fmy) then sy -= fmy end
-              if (not ((not periodic) and (sx > fmxmn or sy > fmymn))) then
+              if (not ((not periodic_output) and (sx > fmxmn or sy > fmymn))) then
                 allowed = wave[sx][sy]
                 for j=1,t do
                   if (allowed[j]) then
@@ -348,7 +349,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
 
 
 
-    if (argminx == -1 and argminy == -1) return true
+    if (argminx == 0 and argminy == 0) return true
 
     for j=1,t do
       distribution[j] = wave[argminx][argminy][j] and stationary[j] or 0
@@ -372,11 +373,14 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
   --   if (o == nil) then unsolved = true end
   --   while propagate() do end
   -- end
-
-for i=1,5 do
-  local o = observe()
-  if (o==nil) then o = "nil" end
-  print(o,118,0+i*8,11)
+local o = nil
+for i=1,25 do
+  o = observe()
+  if (o!=nil) then 
+    print(o,20,30,11)
+    i = 20
+  end
+  
   while propagate() do end
 end
 
@@ -418,7 +422,7 @@ end
     end
   end
 
-  print(table_str(colors),70,0,12)
+  print(table_str(colors),74,1,12)
 
   for i=1,#propagator[1][1] do
     print(table_str(propagator[1][1][i]), 60,10+i*7,13)
@@ -431,7 +435,7 @@ end
     print(table_str(patterns[i]), 20,30+i*8,9)
   end
 
-  return patterns[1][1]
+  return o
 end 
 
 
