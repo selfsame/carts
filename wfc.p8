@@ -23,28 +23,28 @@ function log(n)
 end
 
 function random_indice(ar, r)
-  return flr(rnd(#ar)+1)
-  -- local sum = 0
-  -- for i=1,#ar do
-  --   sum += ar[i]
-  -- end
-  -- if (sum == 0) then
-  --   for i=1,#ar do
-  --     ar[i] = 1
-  --   end
-  --   sum = #ar
-  -- end
-  -- for i=1,#ar do
-  --   ar[i] /= sum
-  -- end
-  -- i = 1
-  -- x = 0
-  -- while (i < #ar) do
-  --   x += ar[i]
-  --   if (r <= x) return i
-  --   i += 1
-  -- end
-  -- return 0
+  --return flr(rnd(#ar)+1)
+  local sum = 0
+  for i=1,#ar do
+    sum += ar[i]
+  end
+  if (sum == 0) then
+    for i=1,#ar do
+      ar[i] = 1
+    end
+    sum = #ar
+  end
+  for i=1,#ar do
+    ar[i] /= sum
+  end
+  i = 1
+  x = 0
+  while (i <= #ar) do
+    x += ar[i]
+    if (r <= x) return i
+    i += 1
+  end
+  return 1
 end
 
 
@@ -330,10 +330,10 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
           for j=1,t do
             distribution[j] /= sum
           end
-          entropy = 0.001
+          entropy = 0
           for i=1,#distribution do
             if (distribution[i] > 0) then
-              entropy += 0.0001 * rnd(1) -- -distribution[i] * log10(distribution[i])
+              entropy += distribution[i]*distribution[i]
             end
           end
           noise = 0.0001 * rnd(1)
@@ -361,14 +361,24 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
 
     changes[argminx][argminy] = true
 
-    return null
+    return nil
   end
 
   --clear()
-  for i=1,5 do
-    observe()
-    while propagate() do end
-  end
+  -- local unsolved = true
+  -- while unsolved do
+  --   unsolved = false
+  --   local o = observe()
+  --   if (o == nil) then unsolved = true end
+  --   while propagate() do end
+  -- end
+
+for i=1,5 do
+  local o = observe()
+  if (o==nil) then o = "nil" end
+  print(o,118,0+i*8,11)
+  while propagate() do end
+end
 
 
 
@@ -390,7 +400,7 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
         if (wave[x][y][j]) then
           tcnt += 1
           _c = colors[patterns[j][1]+1]
-          pset(x,y+60,tcnt) -- if (rnd(10) < 3) 
+          pset(x,y+30,tcnt) -- if (rnd(10) < 3) 
         end
       end
     end
@@ -401,13 +411,14 @@ function model(input, n, width, height, periodic_input, periodic_output, symmetr
       for j=1,t do 
         if (wave[x][y][j]) then
           tcnt += 1
-          _c = colors[patterns[j][1]]
-          pset(x,y+30,_c) -- if (rnd(10) < 3) 
+          _c = colors[patterns[j][1]+1]
+          pset(x,y+8,_c) -- if (rnd(10) < 3) 
         end
       end
     end
   end
 
+  print(table_str(colors),70,0,12)
 
   for i=1,#propagator[1][1] do
     print(table_str(propagator[1][1][i]), 60,10+i*7,13)
