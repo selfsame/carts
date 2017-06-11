@@ -4,7 +4,7 @@ __lua__
 
 -- todo
 -- [ ] fix periodic_output (hack with larger wave/smaller output?)
--- [ ] supply output grid to model, propagate to allow constraints
+-- [/] supply output grid to model, propagate to allow constraints
 -- [x] remove ground arg
 -- [ ] fix failure detection
 -- [ ] demo: select input with right/left, z to generate/regenerate,
@@ -55,6 +55,14 @@ function grid(fmx,fmy)
   return _
 end
 
+function submap(x,y,w,h)
+  local _ = grid(w,h)
+  for xx=0,w-1 do for yy=0,h-1 do
+    _[xx+1][yy+1] = mget(x+xx,y+yy)
+  end end
+  return _
+end
+
 function grideach(g, f)
   for y=1,#g do 
     local row = g[y]
@@ -73,13 +81,13 @@ function solved(ar,w,h,t)
   return true
 end 
 
-function model(input, width, height, periodic_input, periodic_output, symmetry)
+function model(input, output, periodic_input, periodic_output, symmetry)
   local n = 2
   local symmetry = symmetry or 1
   local periodic_output = false
   local periodic_input = true
-  local fmx = width or 15
-  local fmy = height or 15
+  local fmx = #output[1]
+  local fmy = #output
   local smx = #input[1]
   local smy = #input
   local colors = {}
@@ -277,7 +285,7 @@ function model(input, width, height, periodic_input, periodic_output, symmetry)
     return (not periodic_output) and (x > fmxmn or y > fmymn)
   end
 
-  local output = grid(fmx,fmy)
+  
 
   local observe = function()
     local min = 1000
@@ -377,26 +385,11 @@ end
 function point(x,y) return {x=x,y=y} end
 cam = point(0,0)
 
-training = {
-{7,7,8,7,7,7,7},
-{7,7,8,8,8,7,7},
-{7,7,8,7,8,7,7},
-{8,8,8,7,8,8,8},
-{7,8,7,7,7,8,7},
-{7,8,8,8,8,8,7},
-{7,7,8,7,7,7,7}}
 
-function submap(x,y,w,h)
-  local _ = grid(w,h)
-  for xx=0,w-1 do for yy=0,h-1 do
-    _[xx+1][yy+1] = mget(x+xx,y+yy)
-  end end
-  return _
-end
 
 -- training = submap(27,0,8,8)
 training = submap(0,19,6,6)
-o = model(training,16,16)
+o = model(training, grid(16,16))
 
 function _update60()
   if btn(0) then cam.x -= 2 end
@@ -407,7 +400,7 @@ function _update60()
   if(o.solving) then
     o.generate(10)
   elseif (o.failed) then
-    o = model(training,16,16)
+    o = model(training,grid(16,16))
   end
 end
 
@@ -422,11 +415,7 @@ function _draw()
     end
   end
 
-
-  o.drawf(function(x,y,v) 
-    --pset(x,y+8,v) 
-    spr(v,y*8,x*8+16,1,1)
-  end)
+  o.drawf(function(x,y,v) spr(v,y*8,x*8+16,1,1) end)
   rect(7,23,16*8+8,16*8+24,1)
   
 end
