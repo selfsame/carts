@@ -24,7 +24,7 @@ window.onload = function(e){
 	dctx.drawImage(img, 0,0)
 	ctx = output.getContext("2d")
 	id = dctx.getImageData(0,0,6,6)
-  model = new OverlappingModel(id.data, id.width, id.height, 2, 64, 64, true, true, 1);
+  model = new OverlappingModel(id.data, id.width, id.height, 2, 64, 64, false, false, 1);
   model.generate(Math.random)
   imgData = ctx.createImageData(64, 64);
 	model.graphics(imgData.data);
