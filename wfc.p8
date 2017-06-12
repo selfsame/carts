@@ -201,8 +201,17 @@ function model(input, output, periodic_input, periodic_output, symmetry)
     for y=1,fmy do
       wave[x][y] = array(t)
       changes[x][y] = false
-      for j=1,t do
-        wave[x][y][j] = true
+      -- handle user constraints in output grid
+      if (output[x][y] != 0) then
+        tidx = (output[x][y] + t) % t
+        for j=1,t do
+          wave[x][y][j] = (j == tidx)
+        end
+        changes[x][y] = true
+      else
+        for j=1,t do
+          wave[x][y][j] = true
+        end
       end
     end
   end
@@ -285,8 +294,6 @@ function model(input, output, periodic_input, periodic_output, symmetry)
     return (not periodic_output) and (x > fmxmn or y > fmymn)
   end
 
-  
-
   local observe = function()
     local min = 1000
     local argminx = -1
@@ -333,11 +340,12 @@ function model(input, output, periodic_input, periodic_output, symmetry)
     return nil
   end
 
+  while propagate() do end
+
   local res = {solving=true,failed=false}
   
   local generate = function(iter)
     local unsolved = true
-
     while (unsolved and (iter == nil or iter > 0)) do
       local o = observe()
       while propagate() do end
@@ -385,22 +393,27 @@ end
 function point(x,y) return {x=x,y=y} end
 cam = point(0,0)
 
-
-
 -- training = submap(27,0,8,8)
 training = submap(0,19,6,6)
-o = model(training, grid(16,16))
+function setup()
+  res = grid(16,16)
+  -- res[15][2] = 22
+  -- res[15][4] = 22
+  return model(training, res)
+end
+
+o = setup()
 
 function _update60()
   if btn(0) then cam.x -= 2 end
   if btn(1) then cam.x += 2 end
   if btn(2) then cam.y -= 2 end
   if btn(3) then cam.y += 2 end
-  if (btn(4)) then o = model(training,16,16) end
+  if (btn(4)) then o = setup() end
   if(o.solving) then
-    o.generate(10)
+    o.generate(1)
   elseif (o.failed) then
-    o = model(training,grid(16,16))
+    o = setup()
   end
 end
 
