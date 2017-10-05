@@ -2,6 +2,42 @@ pico-8 cartridge // http://www.pico-8.com
 version 8
 __lua__
 
+-- pico8 tween lib - by github.com/selfsame
+_ts = {}
+function lerp(a,b,r) return a+(b-a)*r end
+function pow(n) return function(v) return v^n end end
+function wait(d,f) tween(0,nil,0,d,{f=f}) end
+
+function tween(o, p, v, d, _)
+  _ = _ or {}
+  local t = {o=o,p=p,v=v,d=d,s=d}
+  t.f = _.f
+  t.l = _.l or lerp
+  t.ei = _.ei or _.e
+  t.eo = _.eo or _.e
+  t.iv = p and o[p] or o
+  add(_ts,t)
+  return t
+end
+
+function update_tweens()
+  local ts = {}
+  for t in all(_ts) do
+    if t.o then
+      t.d -= 1
+      local r = 1-t.d/t.s
+      if t.ei and t.eo then r = r<0.5 and t.ei(r*2)/2 or 1-t.eo((1-r)*2)/2
+      elseif t.ei then r = t.ei(r)
+      elseif t.eo then r = 1-t.eo(1-r) end
+      local z = t.l(t.iv, t.v, r)
+      if t.p then t.o[t.p] = z  else t.o = z end
+      if t.d>0 then add(ts,t) elseif t.f then t.f(t.o) end
+    end
+  end
+  _ts = ts
+end
+
+
 -- std fns
 
 function point(x,y) return {x=x,y=y} end
@@ -12,6 +48,10 @@ function vsub(v1, v2) return point(v1.x-v2.x, v1.y-v2.y) end
 function vmul(v, n) return point(v.x*n, v.y*n) end
 function vtimes(a, b) return point(a.x*b.x, a.y*b.y) end
 function vint(v) return point(flr(v.x),flr(v.y)) end
+function vnorm(v)
+  local r = 1/dst(v, point(0,0))
+  return vmul(v, r)
+end
 
 function rand_nth(ar) return ar[flr(rnd(#ar)+1)] end
 
@@ -22,7 +62,16 @@ function entity(type,sprite)
 end
 
 function tile(type,sprite,tile_pos)
-  return {type=type, sprite=sprite, tile_pos=tile_pos}
+  return {type=type, sprite=sprite, tile_pos=tile_pos, hp=4, maxhp=4}
+end
+
+function sethp(thing, n)
+  thing.hp = n
+  thing.maxhp = n
+end
+
+function bullet(type,sprite)
+  return {type=type, sprite=sprite, pos=point(0,0), velocity=point(1,1), damage=1}
 end
 
 function gridget(g,x,y)
@@ -59,6 +108,8 @@ center = vmul(tile_center, 8)
 halfscreen = point(64,64)
 world = {}
 entities = {}
+bullets = {}
+cooldown=0
 player = {pos=point(30,30), speed=1.2}
 feature_blocks = {"four","brain","fourstone","egg","mover"}
 feature_sprites = {four=18, brain=21, fourstone=39, egg=6, mover=52}
@@ -73,6 +124,10 @@ function relative_tile(e,x,y)
   return gridget(world, e.tile_pos.x+x,e.tile_pos.y+y) 
 end
 
+function remove_tile(t)
+  world[t.tile_pos.y][t.tile_pos.x] = 0
+end
+
 function cardinals(f)
   f(-1,0) f(1,0) f(0,-1) f(0,1)
 end
@@ -81,7 +136,7 @@ function collide(pos,dim)
   for off in all(cardinal_points) do
     local tpos = vint(vmul(vadd(pos, vtimes(off, vmul(dim,0.5))),1/8))
     local found = gridget(world,tpos.x+1,tpos.y+1)
-    if (type(found) == "table") return true
+    if (type(found) == "table") return found
   end
 end
 
@@ -115,6 +170,19 @@ function update_tile(e)
   end
 end
 
+function destroy_tile(e)
+  local tpos = e.tile_pos
+  if e.type == "fourstone" then
+    cardinals(function(x,y)
+      if (relative_tile(e,x,y) == 0) then
+        local t = tile("dirt",0,point(tpos.x+x,tpos.y+y))
+        world[tpos.y+y][tpos.x+x] = t
+      end
+    end)
+  end
+  remove_tile(e)
+end
+
 function draw_entity(e)
   spr(e.sprite,e.pos.x,e.pos.y,1,1)
 end
@@ -124,6 +192,21 @@ function update_entity(e)
     e.pos.x += (rnd(4)-2)*0.3
     e.pos.y += (rnd(4)-2)*0.3
   end
+end
+
+function update_bullet(e)
+  local hit = collide(e.pos, point(2,2))
+  if hit then
+    hit.hp -= e.damage
+    hit.sprite += 1
+    if hit.hp < 0 then destroy_tile(hit) end
+    del(bullets,e)
+  end
+  e.pos = vadd(e.pos, e.velocity)
+end
+
+function draw_bullet(e)
+  spr(e.sprite,e.pos.x,e.pos.y,1,1)
 end
 
 function draw_player()
@@ -142,7 +225,7 @@ end
 function init_entity(e)
   if (e == 0) return
   if (e.type == "brain") then
-    e.life = 3
+    e.hp = 3
     e.mass = 24
   end
 end
@@ -187,7 +270,7 @@ end
 
 -- pico fns
 
-function _update()
+function _update60()
   local moved = vint(player.pos)
   if btn(0) then moved.x -= player.speed end
   if btn(1) then moved.x += player.speed*2 end
@@ -198,33 +281,50 @@ function _update()
   if (not collide(moved, point(7,7))) then player.pos = moved end
 
   if btn(4) then create_world() end
+
+  cooldown -= 1
+  if btn(5) and cooldown < 0 then
+    cooldown = 5
+    local b = bullet("plain", 11)
+    b.pos = vsub(player.pos, point(4,4))
+    b.velocity = vmul(vnorm(vsub(center, player.pos)), 2)
+    add(bullets, b)
+    wait(100, function() 
+      del(bullets, b)
+    end)
+  end
   cam = vsub(vadd(vmul(vsub(player.pos, center),0.7), center), halfscreen)
   camera(cam.x, cam.y)
   foreach(entities, update_entity)
+  foreach(bullets, update_bullet)
   grideach(world, update_tile)
+  update_tweens()
 end
 
 function _draw()
+  print(vnorm(point(5,5)))
   cls()
   grideach(world, draw_tile)
   foreach(entities, draw_entity)
+  foreach(bullets, draw_bullet)
   draw_player()
   draw_hud()
 end
 
 
 cls()
-music(0)
+-- music(0)
 create_world()
+
 
 
 __gfx__
 09494940090949400900090006565650060656500000060000077000000760000007600000000000000000000000000000000000000000000000000000000000
 40404044400040405000400050505055500050050000500000777600007756000057050000000000000000000000000000000000000000000000000000000000
-94040404940005059500050565050505650500050505000500777700007577000070770000000000000000000000000000000000000000000000000000000000
-40404044405050540050505450505055505050500050505007777670077576700775707000000000000000000000000000000000000000000000000000000000
-94040404550504005505040065050505500505056005050507777760075757600057576000000000000000000000000000000000000000000000000000000000
-40404044004050440000500050505055005050000050000007777670077776700757750000000000000000000000000000000000000000000000000000000000
+94040404940005059500050565050505650500050505000500777700007577000070770000000000000000000008800000000000000000000000000000000000
+40404044405050540050505450505055505050500050505007777670077576700775707000000000000000000082280000000000000000000000000000000000
+94040404550504005505040065050505500505056005050507777760075757600057576000000000000000000082880000000000000000000000000000000000
+40404044004050440000500050505055005050000050000007777670077776700757750000000000000000000008800000000000000000000000000000000000
 94040404900405049005050465050505050005050500050507676760076767600757576000000000000000000000000000000000000000000000000000000000
 04444440044405400450054005555550005055500050500000767600007676000076760000000000000000000000000000000000000000000000000000000000
 b0000000000000000ff00ff00ff00f5000f00f500ee00ee005500550055005500000000000000000000000000000000000000000000000000000000000000000

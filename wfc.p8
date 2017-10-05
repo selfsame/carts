@@ -394,7 +394,7 @@ function point(x,y) return {x=x,y=y} end
 cam = point(0,0)
 
 -- training = submap(27,0,8,8)
-training = submap(0,19,6,6)
+training = submap(0,19,9,9)
 function setup()
   res = grid(16,16)
   -- res[15][2] = 22
@@ -420,8 +420,7 @@ end
 function _draw()
   cls()
   camera(cam.x,cam.y)
-  print(o.failed,60,0,10)
-  print(o.solving,84,0,9)
+  print("z to regenerate",40,0,10)
   for x=1,#training do
     for y=1,#training[1] do
       pset(x,y,training[x][y])

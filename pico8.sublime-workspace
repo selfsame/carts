@@ -4,56 +4,115 @@
 		"selected_items":
 		[
 			[
-				"pattern",
-				"pattern_from_index"
+				"argmin",
+				"argminx"
 			],
 			[
 				"for",
 				"for\tfor"
 			],
 			[
-				"tar",
-				"target_dims"
+				"_b",
+				"_bsize"
+			],
+			[
+				"fo",
+				"forpairs\tfor-in-pairs"
+			],
+			[
+				"print",
+				"print_table"
+			],
+			[
+				"feature",
+				"feature_sprites"
+			],
+			[
+				"sp",
+				"spr"
+			],
+			[
+				"left",
+				"left_idx"
+			],
+			[
+				"delta",
+				"deltaOrientation"
+			],
+			[
+				"cursor",
+				"cursor-obj"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "wfc.p8",
+			"file": "boids.p8",
 			"settings":
 			{
-				"buffer_size": 44949,
+				"buffer_size": 39288,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "demos/api.p8",
+			"file": "alienarchaeologist.p8",
 			"settings":
 			{
-				"buffer_size": 38736,
+				"buffer_size": 58467,
+				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "ecs.p8",
+			"file": "wfc.p8",
 			"settings":
 			{
-				"buffer_size": 41367,
+				"buffer_size": 46665,
 				"encoding": "UTF-8",
-				"line_ending": "Windows",
-				"name": "pico-8 cartridge // http://www.pico-8.com"
+				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "overlap.cs",
+			"file": "jswfc/index.html",
 			"settings":
 			{
-				"buffer_size": 8014,
+				"buffer_size": 881,
 				"encoding": "UTF-8",
-				"line_ending": "Windows",
-				"name": "/*"
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "jswfc/js/overlapping-model.js",
+			"settings":
+			{
+				"buffer_size": 12883,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/selfsame/Desktop/iga/iga.lua",
+			"settings":
+			{
+				"buffer_size": 18099,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/dev/alien/coffee/generate.coffee",
+			"settings":
+			{
+				"buffer_size": 4519,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "jswfc/js/model.js",
+			"settings":
+			{
+				"buffer_size": 4757,
+				"line_ending": "Windows"
 			}
 		},
 		{
@@ -61,19 +120,33 @@
 			"settings":
 			{
 				"buffer_size": 13210,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "model.cs",
+			"settings":
+			{
+				"buffer_size": 3782,
 				"encoding": "UTF-8",
 				"line_ending": "Windows",
-				"name": "\"use strict\";"
+				"name": "/*"
+			}
+		},
+		{
+			"file": "overlap.cs",
+			"settings":
+			{
+				"buffer_size": 8014,
+				"line_ending": "Windows"
 			}
 		},
 		{
 			"file": "model.js",
 			"settings":
 			{
-				"buffer_size": 4323,
-				"encoding": "UTF-8",
-				"line_ending": "Windows",
-				"name": "\"use strict\";"
+				"buffer_size": 4496,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -93,61 +166,25 @@
 				"PICO-8: Run Cartridge"
 			],
 			[
-				"Package Control: ",
+				"PICO",
+				"PICO-8: Browse BBS"
+			],
+			[
+				"install",
 				"Package Control: Install Package"
 			],
 			[
-				"insta",
-				"Package Control: Install Package"
-			],
-			[
-				"men",
-				"View: Toggle Menu"
-			],
-			[
-				"syntax: cloj",
-				"Set Syntax: ClojureScript"
+				"packa",
+				"Install Package Control"
 			]
 		],
-		"width": 440.0
+		"width": 247.0
 	},
 	"console":
 	{
-		"height": 133.0,
+		"height": 0.0,
 		"history":
 		[
-			"text = '(load-string \"' + text.strip().replace('\"', r'\\\"') + '\")'",
-			"view.scope_name(view.find(r\"^[^;]*?\\(\", 0).end()-1)",
-			"view.scope_name(view.find(r\"^[^;]*?\\(\", 0).end()-1)\\",
-			"view.scope_name(view.find(r\"^[^;]*?\\(\", 0).end()-1)",
-			"view.find(r\"^[^;]*?\\(\", 0)",
-			"r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\".rfind(\"hard.input (:import [UnityEngine Input KeyCode Camera Physics Time])\")",
-			"r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\".rfind(\"(ns hard.input (:import [UnityEngine Input KeyCode Camera Physics Time])\")",
-			"r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\".rfind(\"(ns hard.input (:import [UnityEngine Input KeyCode Camera Physics Time]))\")",
-			"dir(r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\")",
-			"r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\"",
-			"view.substr(view.find(r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\", view.find(r\"^[^;]*?\\(\", 0).begin() + 3))",
-			"view.find(r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\", view.find(r\"^[^;]*?\\(\", 0).begin() + 3).substr",
-			"view.find(r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\", view.find(r\"^[^;]*?\\(\", 0).begin() + 3).text",
-			"view.find(r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\", view.find(r\"^[^;]*?\\(\", 0).begin() + 3).lines",
-			"view.find(r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\", view.find(r\"^[^;]*?\\(\", 0).begin() + 3).lines()",
-			"dir(view)",
-			"view.find(r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\", view.find(r\"^[^;]*?\\(\", 0).begin() + 3)",
-			"view.find(r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\", view.find(r\"^[^;]*?\\(\", 0).begin() + 3).begin()",
-			"view.find(r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\", view.find(r\"^[^;]*?\\(\", 0).begin() + 3)",
-			"view.find(r\"[\\}\\s][A-Za-z\\_!\\?\\*\\+\\-][\\w!\\?\\*\\+\\-:]*(\\.[\\w!\\?\\*\\+\\-:]+)*\", namespacedecl.begin() + 3)",
-			"view.scope_name(view.find(r\"^[^;]*?\\(\", 0).begin() + 1)",
-			"view.find(r\"^[^;]*?\\(\", 0)",
-			"namespacedecl ",
-			"view.scope_name(namespace.begin() + 1)",
-			"view.scope_name(namespacedecl.end()-1)",
-			"namespacedecl = view.find(r\"^[^;]*?\\(\", 0)",
-			"view.find(r\"^[^;]*?\\(\", 0)",
-			"view.scope_name(namespacedecl.end()-1)",
-			"view.scope_name",
-			"view",
-			"import urllib.request,os,sys; exec(\"if sys.version_info < (3,) or os.name != 'nt': raise OSError('This code is for Windows ST3 only!')\"); pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')",
-			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())"
 		]
 	},
 	"distraction_free":
@@ -161,85 +198,53 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Joe/AppData/Roaming/pico-8/carts",
-		"/C/Users/Joe/AppData/Roaming/pico-8/carts/demos"
+		"/C/Users/selfsame/AppData/Roaming/pico-8/carts",
+		"/C/Users/selfsame/AppData/Roaming/pico-8/carts/demos",
+		"/C/Users/selfsame/AppData/Roaming/pico-8/carts/jswfc",
+		"/C/Users/selfsame/AppData/Roaming/pico-8/carts/jswfc/js"
 	],
 	"file_history":
 	[
-		"/C/projects/joe/dev/sculpt/app/index - Copy.html",
-		"/C/projects/OTD website/site-black/css/style.css",
-		"/C/projects/joe/dev/sculpt/app/serve.BAT",
-		"/C/projects/joe/dev/leftpad.js",
-		"/C/projects/OTD website/site/server.BAT",
-		"/C/projects/joe/dev/safe.txt",
-		"/C/projects/joe/dev/unity/vanilla/Assets/vanilla.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/clojure/core.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Components/UpdateHook.cs",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/clojure/core_deftype.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/classy/src/main/clojure/clojure/classy/fish.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/classy/project.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/internal/components.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Editor/CustomEditorInspectors.cs",
-		"/C/projects/joe/dev/unity/vanilla/Assets/classy/src/main/clojure/classy/fish.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/classy/src/main/cljs/classy/fish.cljs",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Components/ArcadiaBehaviour.cs",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Components/AwakeHook.cs",
-		"/C/projects/joe/dev/unity/vanilla/Assets/core.logic/src/main/clojure/clojure/core/logic/protocols.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/core.logic/src/main/clojure/clojure/core/logic.clj",
-		"/C/Users/Joe/AppData/Local/Unity/Editor/Editor.log",
-		"/C/projects/joe/dev/unity/vanilla/Assets/core.logic/src/main/clojure/clojure/core/logic/fd.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/core.logic/src/test/clojure/clojure/core/logic/tests.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/core.logic/src/test/clojure/clojure/core/logic/nominal/tests.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/core.logic/src/main/clojure/clojure/core/logic/nominal.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/configuration.edn",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/clojure/gvec.clj",
-		"/C/Users/Joe/AppData/Local/Unity/Editor/Editor-prev.log",
-		"/C/projects/joe/dev/core.logic/src/main/clojure/clojure/core/logic.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/core.logic/src/main/clojure/clojure/core/logic/datomic.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/core.logic/src/main/clojure/cljr/core/logic/protocols.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/internal/editor_interop.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/compiler.clj",
-		"/C/projects/joe/dev/clojure-toolbox.com/projects.yml",
-		"/C/projects/joe/dev/seecode/src/deck/data.cljs",
-		"/C/projects/joe/dev/seecode/src/deck/core.cljs",
-		"/C/projects/joe/dev/seecode/resources/public/data/tween1.md",
-		"/C/projects/joe/dev/final/resources/public/demo/wiki-light.html",
-		"/C/projects/joe/dev/unity/vanilla/Arcadia/configuration.edn",
-		"/C/projects/joe/dev/nostrand/Nostrand.sln",
-		"/C/projects/joe/dev/nostrand/Nostrand.csproj",
-		"/C/projects/joe/dev/unity/vanilla/clojure-clr/unity-build.sh",
-		"/C/projects/joe/dev/unity/vanilla/clojure-clr/unity-install.sh",
-		"/C/projects/joe/dev/unity/vanilla/Assets/deftests.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/combined.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Editor/Initialization.cs",
-		"/C/projects/joe/dev/unity/vanilla/Assets/test1.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/internal/state.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/internal/file_system.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/internal/asset_watcher.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/config.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/internal/filewatcher.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/repl.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/internal/leiningen.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/packages.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/hydrate/src/timsg/hydrate/reflect.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/squirt.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/hydrate/src/timsg/hydrate.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/core.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/literals.clj",
-		"/C/projects/joe/dev/unity/pelatra/pelatra_latest/Assets/StreamingAssets/bike/workout_long.json",
-		"/C/projects/joe/dev/unity/pelatra/pelatra_latest/Assets/StreamingAssets/bike/workout1.json",
-		"/C/projects/joe/dev/unity/pelatra/pelatra_latest/Assets/StreamingAssets/bike/colored_workout.json",
-		"/C/projects/joe/dev/unity/biology/biology/Assets/Clojure/Scripts/biology/squid.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Editor/BuildPostProcess.cs",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Editor/Repl.cs",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Editor/Util.cs",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Editor/ReplCleaner.cs",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/internal/map_utils.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/internal/functions.clj",
-		"/C/projects/joe/dev/unity/vanilla/Assets/Arcadia/Source/arcadia/internal/filewatcher_dummy.clj",
-		"/C/projects/joe/dev/unity/vanilla/vanilla.sublime-project",
-		"/C/Users/jparker/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
-		"/C/Users/admin/Documents/dev/selenica/project.clj"
+		"/C/Users/selfsame/AppData/Roaming/pico-8/carts/demos/buckethash.p8",
+		"/C/Users/selfsame/AppData/Local/Temp/7zE04D0A49D/iga.lua",
+		"/C/Users/selfsame/AppData/Roaming/pico-8/carts/demos/butterfly.p8",
+		"/C/Users/selfsame/AppData/Roaming/pico-8/carts/pico8-ec.p8",
+		"/C/Users/selfsame/AppData/Roaming/pico-8/carts/alien_archaeologist.p8",
+		"/C/dev/alien/coffee/blocks.coffee",
+		"/C/dev/alien/coffee/entity_constructor.coffee",
+		"/C/dev/alien/coffee/classes.coffee",
+		"/C/dev/alien/coffee/game.coffee",
+		"/C/dev/alien/coffee/boids.coffee",
+		"/C/dev/alien/coffee/fun.coffee",
+		"/C/Users/selfsame/AppData/Roaming/Sublime Text 3/Packages/User/PICO-8.sublime-build",
+		"/C/Users/selfsame/AppData/Roaming/Sublime Text 3/Packages/PICO-8/pico_run_cart.py",
+		"/C/Users/selfsame/AppData/Roaming/Sublime Text 3/Packages/PICO-8/PICO-8.sublime-commands",
+		"/C/Users/selfsame/AppData/Roaming/Sublime Text 3/Packages/PICO-8/PICO-8.tmLanguage",
+		"/C/Users/selfsame/AppData/Roaming/Sublime Text 3/Packages/arcadia-repl/Clojure.sublime-settings",
+		"/C/dev/sculptgl/README.md",
+		"/C/dev/sculptgl/src/mesh/Mesh.js",
+		"/C/dev/sculptgl/src/drawables/Primitives.js",
+		"/C/dev/sculptgl/src/gui/GuiFiles.js",
+		"/C/dev/sculptgl/src/editing/Remesh.js",
+		"/C/dev/sculptgl/src/drawables/frame.js",
+		"/C/dev/sculptgl/src/mesh/UIMesh.js",
+		"/C/dev/sculptgl/src/files/ImportPLY.js",
+		"/C/dev/sculptgl/src/gui/GuiTopology.js",
+		"/C/dev/unity/cljvr/Assets/SteamVR/Scripts/SteamVR_UpdatePoses.cs",
+		"/C/dev/unity/cljvr/Assets/SteamVR/Extras/SteamVR_TrackedController.cs",
+		"/C/dev/unity/cljvr/Assets/game/todo.clj",
+		"/C/dev/unity/cljvr/Assets/hard/core.clj",
+		"/C/dev/unity/cljvr/arcadia.sublime-project",
+		"/C/dev/unity/cljvr/Assets/SteamVR/Scripts/SteamVR_TestController.cs",
+		"/C/dev/unity/cljvr/Assets/Arcadia/Source/arcadia/core.clj",
+		"/C/dev/unity/cljvr/Assets/repl/core.clj",
+		"/C/dev/unity/cljvr/.gitignore",
+		"/C/dev/unity/cljvr/Assets/shaders/vertex-shadow-diffuse.shader",
+		"/C/dev/unity/pelatra/pelatra_latest/Assets/workout1.json",
+		"/C/dev/Arcadia/README.md",
+		"/C/Users/selfsame/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/dev/unity/cljvr/Assets/tween/core.clj",
+		"/C/Users/selfsame/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings"
 	],
 	"find":
 	{
@@ -247,115 +252,82 @@
 	},
 	"find_in_files":
 	{
-		"height": 106.0,
+		"height": 109.0,
 		"where_history":
 		[
-			"C:\\projects\\joe\\dev\\sculpt\\src",
-			"C:\\projects\\joe\\dev\\unity\\vanilla\\Assets\\Arcadia\\Source\\clojure",
-			"C:\\projects\\joe\\dev\\unity\\vanilla\\Assets\\core.logic\\src\\main\\clojure\\clojure\\core",
-			"C:\\projects\\joe\\dev\\unity\\vanilla\\Assets\\Arcadia\\Source\\clojure",
-			"C:\\projects\\joe\\dev\\unity\\vanilla\\Assets\\Arcadia\\Source\\arcadia",
-			"C:\\projects\\joe\\dev\\unity\\vanilla\\Assets\\Arcadia\\Source\\clojure",
-			"C:\\projects\\joe\\dev\\unity\\vanilla\\Assets\\Arcadia\\Source\\arcadia"
+			"C:\\dev\\sculptgl\\src",
+			"C:\\dev\\unity\\cljvr\\Assets\\SteamVR",
+			"C:\\dev\\unity\\cljvr\\Assets\\Arcadia\\Source\\arcadia"
 		]
 	},
 	"find_state":
 	{
-		"case_sensitive": true,
+		"case_sensitive": false,
 		"find_history":
 		[
-			"propagate",
-			"onBoundary",
-			"active",
-			"gold",
-			"smoke",
-			"joe",
-			"black",
-			"white",
-			"position_title",
-			"Selfsame",
-			"addCylinder",
-			"Selfsame",
-			"normalizeAndCenterMeshes",
-			"_autoMatrix",
-			"ch",
-			"num",
-			"str",
-			"case",
-			"letfn",
-			"reify",
-			"fnIndexes",
-			"conde",
-			"log",
-			"hashCode",
-			"getClass",
-			"equals",
-			"toString",
-			"Writer",
-			"isInstance",
-			"same-type",
-			"same-type?",
-			"isInstance",
-			"isInstanceOfType",
-			"isInstance",
-			"getClass",
-			"clojure.lang.Counted",
-			"Substitutions",
-			"Integer",
-			"Error",
-			"toString",
-			"equals",
-			"hashCode",
-			"equals",
-			"toString",
-			"getKey",
-			"IMapEntry",
-			"IndexOutOfBoundsException",
-			"map-entry?",
-			"Throwable",
-			"pair",
-			"UUID",
-			"Writer",
-			"*print-length*",
-			"spit",
-			"sh",
-			"aot-namespaces",
-			"RT\\.load\\(.*",
-			"RT\\.load\\(arcadia\\/config\\).*",
-			"edn",
-			"Debug",
-			"state",
-			"aw",
-			"fw",
-			"RT\\.load\\(arcadia\\/config\\).*",
-			"Path",
-			"File",
-			"Regex",
-			"RT\\.load\\(arcadia\\/config\\).*",
-			"RT\\.load\\(hard\\/core\\).*",
-			"RT\\.load\\(arcadia\\/config\\).*",
-			"RT.load(arcadia/config)",
-			"\n(",
-			"pprint",
-			"fdef",
-			"s/def",
-			"fdef",
-			"s/def",
-			"pprint",
-			"s/def",
-			"clojure.spec",
-			"Dictionary",
-			"Generic",
-			"Dictionary",
-			"config",
-			"record-props",
-			"setables",
-			"prop->map",
-			"server",
-			"parse-stack-trace",
-			"window",
-			"try",
-			"pelatra"
+			"clear",
+			"ground",
+			"grideach",
+			"clear",
+			"ground",
+			"periodic",
+			"periodic_output",
+			"ground",
+			"print_pattern",
+			"grideach",
+			"contains",
+			"tcount",
+			"periodicInput",
+			"periodic_input",
+			"periodic",
+			"_f",
+			"])",
+			"spr",
+			"10",
+			"periodicInput",
+			"periodic_input",
+			"update_tile",
+			"!",
+			"count",
+			"if",
+			"a",
+			"vrinit",
+			"onControllerMove",
+			"WEBVR",
+			"_lastMouseX",
+			"picking",
+			"vec3",
+			"updateMoveDir",
+			"dir",
+			"controllerDistance",
+			"_mesh.scale",
+			"initialS",
+			"this.initialS",
+			"this.S",
+			"60",
+			"57",
+			"getRotation",
+			"optimizePostTransform",
+			"optimize",
+			"optimizePostTransform",
+			"fArUV.set",
+			"new Mesh",
+			"allocateArrays",
+			"initTopology",
+			"_nbVertices",
+			"initialS",
+			"mat4.rotate",
+			"inverse",
+			"LTI",
+			"material-color",
+			"Haptic",
+			"HapticsOnTouch",
+			"EVRButtonId.k_EButton_SteamVR",
+			"k_EButton_SteamVR_Touchpad",
+			"EVRButtonId",
+			"Device",
+			"find-component",
+			"camel"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -370,139 +342,262 @@
 		"whole_word": false,
 		"wrap": true
 	},
+	"folders":
+	[
+		{
+			"path": "C:\\Users\\selfsame\\AppData\\Roaming\\pico-8\\carts"
+		}
+	],
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "wfc.p8",
+					"file": "boids.p8",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 44949,
+						"buffer_size": 39288,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7100,
-								7100
+								140,
+								100
 							]
 						],
 						"settings":
 						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Tokyo (dark).tmTheme",
 							"syntax": "Packages/PICO-8/PICO-8.tmLanguage",
 							"tab_size": 2
 						},
 						"translation.x": 0.0,
-						"translation.y": 4723.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "alienarchaeologist.p8",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 58467,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4297,
+								4297
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PICO-8/PICO-8.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2193.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "wfc.p8",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 46665,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9106,
+								9106
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PICO-8/PICO-8.tmLanguage",
+							"tab_size": 2
+						},
+						"translation.x": 0.0,
+						"translation.y": 6479.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "demos/api.p8",
-					"semi_transient": true,
+					"buffer": 3,
+					"file": "jswfc/index.html",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 38736,
+						"buffer_size": 881,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1046,
-								1046
+								381,
+								381
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PICO-8/PICO-8.tmLanguage"
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
-						"translation.x": -0.0,
-						"translation.y": 765.0,
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "jswfc/js/overlapping-model.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 12883,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/C/Users/selfsame/Desktop/iga/iga.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18099,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3417,
+								3417
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/C/dev/alien/coffee/generate.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4519,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								325,
+								325
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 90.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 7,
+					"file": "jswfc/js/model.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4757,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1656,
+								1656
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 450.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "ecs.p8",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 41367,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3567,
-								3567
-							]
-						],
-						"settings":
-						{
-							"auto_name": "pico-8 cartridge // http://www.pico-8.com",
-							"syntax": "Packages/PICO-8/PICO-8.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 86.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 2,
-			"sheets":
-			[
-				{
-					"buffer": 3,
-					"file": "overlap.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8014,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7639,
-								7639
-							]
-						],
-						"settings":
-						{
-							"auto_name": "/*",
-							"syntax": "Packages/Unity3D/UnityC#.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3066.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
+					"buffer": 8,
 					"file": "overlap.js",
 					"semi_transient": false,
 					"settings":
@@ -514,53 +609,110 @@
 						"selection":
 						[
 							[
-								10346,
-								10346
+								9369,
+								9375
 							]
 						],
 						"settings":
 						{
-							"auto_name": "\"use strict\";",
-							"syntax": "Packages/Unity3D/UnityJavaScript.tmLanguage",
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4046.0,
+						"translation.y": 4389.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "model.js",
+					"buffer": 9,
+					"file": "model.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4323,
+						"buffer_size": 3782,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2470,
-								2470
+								1308,
+								1316
 							]
 						],
 						"settings":
 						{
-							"auto_name": "\"use strict\";",
-							"syntax": "Packages/Unity3D/UnityJavaScript.tmLanguage",
+							"auto_name": "/*",
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "overlap.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8014,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7346,
+								7346
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3459.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "model.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4496,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3862,
+								3867
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1260.0,
+						"translation.y": 2139.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
@@ -568,7 +720,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 22.0
+		"height": 21.0
 	},
 	"input":
 	{
@@ -594,7 +746,7 @@
 		"cols":
 		[
 			0.0,
-			0.489832535885,
+			0.584886636241,
 			1.0
 		],
 		"rows":
@@ -604,15 +756,19 @@
 		]
 	},
 	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 187.0
+	},
 	"output.find_results":
 	{
 		"height": 0.0
 	},
 	"pinned_build_system": "",
-	"project": "pico8.sublime-project",
+	"project": "",
 	"replace":
 	{
-		"height": 40.0
+		"height": 38.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -626,16 +782,12 @@
 	},
 	"select_project":
 	{
-		"height": 500.0,
+		"height": 0.0,
 		"last_filter": "",
 		"selected_items":
 		[
-			[
-				"",
-				"C:\\projects\\joe\\dev\\soa\\soa.sublime-project"
-			]
 		],
-		"width": 380.0
+		"width": 0.0
 	},
 	"select_symbol":
 	{
@@ -651,10 +803,10 @@
 	{
 	},
 	"show_minimap": true,
-	"show_open_files": true,
+	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 211.0,
+	"side_bar_width": 129.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
