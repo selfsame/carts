@@ -7,7 +7,7 @@ __lua__
 -- ecs
 
 function _has(e, ks)
-  for n in all(ks) do
+  for _,n in pairs(ks) do
     if not e[n] then
       return false
     end
@@ -17,13 +17,60 @@ end
 
 function system(ks, f)
   return function(es)
-    for e in all(es) do
+    for k,e in pairs(es) do
       if _has(e, ks) then
         f(e)
       end
     end
   end
 end
+
+
+-- buckethash
+
+_9 = {}
+function point(x,y) return {x=x,y=y} end
+for x=-1,1 do for y=-1,1 do add(_9,point(x,y)) end end
+function p_str(p) return p.x..","..p.y end
+function coords(p, s) return point(flr(p.x*(1/s)),flr(p.y*(1/s))) end
+
+function str_p(s)
+  for i=1,#s do if sub(s,i,i) == "," then
+    return point(sub(s, 1, i-1)+0, sub(s, i+1, #s)+0)
+end end end
+
+function badd(k,e,_b)
+  _b[k] = _b[k] or {} 
+  add(_b[k], e)
+end
+
+function bstore(_b,e)
+  local p = p_str(coords(e[_b.prop],_b.size))
+  local k = e._k
+  if k then
+    if (k != p) then
+      local b = _b[k]
+      del(b,e)
+      if (#b == 0) _b[k]=nil
+      badd(p,e,_b)
+    end
+  else badd(p,e,_b) end
+  e._k = p
+end
+
+function bget(_b, p)
+  local p = coords(p, _b.size)
+  local _ = {}
+  for o in all(_9) do
+    local found = _b[p_str(point(p.x+o.x,p.y+o.y))]
+    if found then for e in all(found) do add(_,e) end end
+  end
+  return _
+end
+
+
+
+
 
 
 -- std fns
@@ -46,11 +93,12 @@ function vlerp(a,b,r) return point(lerp(a.x, b.x, r), lerp(a.y, b.y, r)) end
 
 function rand_nth(ar) return ar[flr(rnd(#ar)+1)] end
 
-function MAP(f, ar) a = {} for i,v in pairs(ar) do a[i] = f(v) end return a end
-function EVERY(f, c) for i,v in pairs(c) do if not f(v) then return false end end return true end
-function TRUTHY(v) if v then return true else return false end end
-function ASSOC(m, k, v) m[k] = v return m end
-function MERGE(a, b) 
+function mapf(f, ar) a = {} for i,v in pairs(ar) do a[i] = f(v) end return a end
+function every(f, c) for i,v in pairs(c) do if not f(v) then return false end end return true end
+function some(f, c) for i,v in pairs(c) do if f(v) then return true end end end
+function truthy(v) if v then return true else return false end end
+function assoc(m, k, v) m[k] = v return m end
+function merge(a, b) 
   c = {} -- don't mutate
   for k,v in pairs(a) do c[k] = v end 
   for k,v in pairs(b) do c[k] = v end 
@@ -72,21 +120,83 @@ function point_to_tile(v) return vint(vdiv(v, 8)) end
 function tile_to_point(v) return vmul(v, 8) end
 
 function point_in_tile(v, flag)
-  -- todo: if mget is map coords might need to offset for future level chunks
-  return fget(mget((v.x)/8,(v.y)/8), flag)
+  mv = vadd(vdiv(v, 8), lvl.ul)
+  return fget(mget(mv.x, mv.y), flag)
 end
 
 function points_in_tile(vs, flag)
-  return EVERY(TRUTHY, MAP(function(v) return point_in_tile(v, flag) end, vs))
+  return some(truthy, mapf(function(v) return point_in_tile(v, flag) end, vs))
 end
 
+function map_to_screen(v) 
+  return vadd(vmul(vsub(v, lvl.ul), 8), point(4,4))
+end
+
+function same_tile(a, b)
+  av = vint(vdiv(a.pos, 8))
+  bv = vint(vdiv(b.pos, 8))
+  if av.x == bv.x and av.y == bv.y then return true end
+end
 
 function add_control(m) 
-  return ASSOC(m, "control", {h=0, v=0, z=0, x=0})
+  return assoc(m, "control", {h=0, v=0, z=0, x=0})
 end
+
+function spawn_points() 
+  res = {}
+  for y = lvl.ul.y, lvl.br.y do 
+    for x = lvl.ul.x, lvl.br.x do 
+      -- todo: check if a non solid tile with a floor below
+      m = mget(x, y)
+      if not fget(m, 0) and not fget(m, 1) and not fget(m, 2) then 
+        m = mget(x,y+1)
+        if fget(m, 0) or fget(m, 2) then
+          res[#res+1] = point(x, y)
+        end
+      end
+    end
+  end
+  return res
+end
+
+
+
+function load_level(l,t,r,b)
+  -- sets a region of the map to be the current level
+  -- finds all valid spawn points, spawns the player
+  -- and treasure chests.
+
+  -- splite these up a bit to speed up ECS
+  world = {} -- actors
+  items = {} -- chests/pickups
+  particles = {} -- decorations
+
+  lvl = {
+    ul = point(l,t),
+    br = point(r,b)}
+  lvl.spawns = spawn_points()
+  debug = rand_nth(lvl.spawns).x..","..rand_nth(lvl.spawns).y
+
+  add(world, add_control(player))
+  player.pos = map_to_screen(rand_nth(lvl.spawns))
+
+  for i=1,10 do
+    chest = {
+      pos=map_to_screen(rand_nth(lvl.spawns)),
+      sprite=6,
+      closed=true
+    }
+    add(items, chest)
+  end
+end
+
 
 
 -- systems
+
+positions = system({"pos"}, function(e)
+  bstore(touchstore, e)
+end)
 
 sprites = system({"pos", "sprite"}, function(e)
   spr(e.sprite, e.pos.x-4, e.pos.y-4, 1, 1, e.flipx)
@@ -102,7 +212,7 @@ gravities = system({"gravity", "velocity", "solid"}, function(e)
   end
 end)
 
-controls = system({"pos", "control", "velocity", "speed", "solid", "bounds"}, function(e)
+controls = system({"control", "velocity", "speed", "solid", "bounds", "pos"}, function(e)
   e.solid.ladder = point_in_tile(e.pos, 1) or point_in_tile(vadd(e.pos, point(0, e.bounds[2].y+1)), 1)
 
   up = e.control.v == -1
@@ -113,7 +223,7 @@ controls = system({"pos", "control", "velocity", "speed", "solid", "bounds"}, fu
   if e.solid.ladder then
     e.velocity.y = e.control.v * e.speed
   end
-
+  
   if (e.solid.grounded) and up then
     -- todo: jump height here
     e.velocity.y = -2
@@ -132,6 +242,31 @@ inputs = system({"control", "input"}, function(e)
   e.control.x = btn(5)
 end)
 
+players = system({"control", "player", "solid"}, function(e)
+  onchest = false
+  in_range = bget(touchstore, e.pos)
+  for k,v in pairs(in_range) do 
+    if v ~= e then
+      if same_tile(e, v) then
+        if v.closed then
+          onchest = v
+        end
+      end
+    end
+  end
+
+  if onchest then
+    info = "press \131 to open"
+    if e.control.v == 1 then
+      onchest.closed = false
+      onchest.sprite += 1
+    end
+  else
+    info = ""
+  end
+
+end)
+
 cameras = system({"pos", "camera"}, function(e)
   e.camera = vsub(e.pos, point(64, 64)) --vlerp(e.camera, vsub(e.pos, point(64, 64)), 0.2)
   camera(e.camera.x, e.camera.y)
@@ -141,35 +276,48 @@ end)
 
 
 physics = system({"pos", "velocity", "solid", "bounds"}, function(e)
-  e.solid.grounded=false
+  if not e.lastpos then e.lastpos = point(e.pos.x, e.pos.y) end
+  e.solid.grounded = false
+  e.solid.walltouching = false
   ul = e.bounds[1]
   br = e.bounds[2]
-  -- todo: consolodate point queries
-  -- this doesn't work when passing through platforms
+
+  -- need to move past tile when passing through platforms (not just reset pos.y)
+  -- prevent going down when ladder above platform(not through)
+  -- can fall into corners
+  -- can get stuck in corners
+
+
   if e.velocity.y >= 0 and not e.solid.descending then -- only if falling
-    if point_in_tile(vadd(e.pos, point(0, br.y)), 0) or
-       point_in_tile(vadd(e.pos, point(ul.x, br.y)), 0) or
-       point_in_tile(vadd(e.pos, point(br.x, br.y)), 0) then
-      e.pos.y = e.lastpos.y
-      e.velocity.y = 0
-      e.solid.grounded=true
+    if not e.solid.descending then 
+      if point_in_tile(vadd(e.pos, point(0, br.y)), 0) then 
+        e.solid.grounded=true
+      end
+      if points_in_tile(mapf(function(v) return vadd(e.pos, v) end, {
+          point(0, br.y),
+          point(ul.x, br.y),
+          point(br.x, br.y) }), 0) then
+        e.pos.y = e.lastpos.y
+      end
     end
   end
-  if point_in_tile(vadd(e.pos, point(0, ul.y)), 2) or
-     point_in_tile(vadd(e.pos, point(ul.x+1, ul.y)), 2) or
-     point_in_tile(vadd(e.pos, point(br.x-1, ul.y)), 2) then
+  if points_in_tile(mapf(function(v) return vadd(e.pos, v) end, {
+      point(0, ul.y),
+      point(ul.x+1, ul.y),
+      point(br.x-1, ul.y) }), 2) then
     e.pos.y = e.lastpos.y
     e.velocity.y = 0
   end
-  if point_in_tile(vadd(e.pos, point(br.x, 0)), 2) or 
-     point_in_tile(vadd(e.pos, point(br.x, ul.y)), 2) or 
-     point_in_tile(vadd(e.pos, point(br.x, br.y)), 2) or 
-     point_in_tile(vadd(e.pos, point(ul.x, 0)), 2) or
-     point_in_tile(vadd(e.pos, point(ul.x, ul.y)), 2) or 
-     point_in_tile(vadd(e.pos, point(ul.x, br.y)), 2) then
+  if points_in_tile(mapf(function(v) return vadd(e.pos, v) end, {
+      point(br.x, 0),
+      point(br.x, ul.y),
+      point(br.x, br.y),
+      point(ul.x, 0),
+      point(ul.x, ul.y),
+      point(ul.x, br.y) }), 2) then
+    e.solid.walltouching = true
     e.pos.x = e.lastpos.x
   end
-  debug = e.solid.ladder
   e.lastpos = e.pos
 end)
 
@@ -207,11 +355,23 @@ end)
 -- data
 
 debug = "debug"
+info = ""
 
 world = {}
+items = {}
+particles = {}
+touchstore = {size=8,prop="pos"}
+
+actorbase = {
+  pos=point(0,0),
+  velocity=point(0,0),
+  gravity=true,
+  bounds={point(-2,-3), point(2,3)},
+}
 
 -- todo: base entity & merge
 player = {
+  player=true,
   input=true,
   camera=point(64,64),
   sprite=16, 
@@ -233,17 +393,25 @@ player = {
   }
 }
 
-add(world, add_control(player))
 
+
+
+--load_level(28,0,38,8)
+load_level(0,0,24,13)
 
 -- pico fns
 
 function _update60()
   inputs(world)
   controls(world)
+  
   gravities(world)
   velocities(world)
   physics(world)
+  positions(world)
+  positions(items)
+
+  players(world)
   walkers(world)
   animations(world)
   cameras(world)
@@ -253,30 +421,44 @@ end
 
 function _draw()
   cls()
-  map(0, 0, 0, 0, 32, 32)
+  map(lvl.ul.x, lvl.ul.y, 0, 0, lvl.br.x-lvl.ul.x+1, lvl.br.y-lvl.ul.y+1)
   sprites(world)
+  sprites(items)
+
   --bounds(world)
-  debug = EVERY(TRUTHY, {1, true, "ok"})
   print(debug, player.pos.x, player.pos.y - 64, 9)
+  print(info, player.pos.x - 60, player.pos.y + 58, 3)
 end
 
 
 -- todo
 -- [ ] fix platformer physics
--- [ ] efficient collision detection
+  -- [ ] jump should accumulate a few frames so can control height
+-- [x] optimizations
+  -- [x] use bucket lib for neighbors
+  -- [x] split up entity pools
 -- [ ] game loop
-  -- [ ] level creation & population
-  -- [ ] find spawnpoints
-  -- [ ] powerups
+  -- [/] level creation & population
+  -- [x] find spawnpoints
+  -- [/] powerups
+    -- [x] openable chests
+    -- [ ] powerup pickup
+    -- [ ] powerup icons
+    -- [ ] calculate stats
+  -- [ ] enemies
+    -- [ ] constuction pattern
+    -- [ ] spawn timing
+    -- [ ] ai controll
+    -- [ ] attack and damage/dying
 
 __gfx__
 00000000525444525252525200044400515151510000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000252404252525252500040400151515150000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00600060525444525252525200044400515151510000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00060600050404050505050500040400151515150000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00006000000444000000000000044400515151510000000000776660077760000000000000000000000000000000000000000000000000000000000000000000
-000606000004040000000000000404001515151500900000007766600761d0000000000000000000000000000000000000000000000000000000000000000000
-006000600004440000000000000444005151515100030000007dddd0076111d00000000000000000000000000000000000000000000000000000000000000000
+00600060525444525252525200044400515151510000000000000000065550000000000000000000000000000000000000000000000000000000000000000000
+00060600050404050505050500040400151515150000000000000000065550000000000000000000000000000000000000000000000000000000000000000000
+00006000000444000000000000044400515151510000000000776660065550000000000000000000000000000000000000000000000000000000000000000000
+000606000004040000000000000404001515151500900000007766600661ddd00000000000000000000000000000000000000000000000000000000000000000
+006000600004440000000000000444005151515100030000007dddd0005d66600000000000000000000000000000000000000000000000000000000000000000
 00000000000404000000000000040400151515150003000000556660005566600000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00044000000440000004400000044000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -532,15 +714,15 @@ __gff__
 0003010205800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 __map__
-0000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000000000000005040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0400000000000404010202020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0400000000000000030000000000000500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0400000504000000030004000000020201020000000000050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0402020202010202020202000000000003000000000102020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0400000000030000000000000000000003000000000300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0400000000030000000000000500000003000000000300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000040000000000000000000000000000000004040404040404040404040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000040000000000000000000000000000000004000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000005040000000000000000000000000000000004000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0400000000000404010202020000000000000000000000000000000004000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0400000000000000030000000000000500000000000000000000000004000202020102020200040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0400000504000000030004000000020201020000000000050000000004000000000300000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0402020202010202020202000000000003000000000102020000000004000000000300000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0400000000030000000000000000000003000000000300000000000004040400000300000404040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0400000000030000000000000500000003000000000300000000000004040404040404040404040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0400000000030000000000020201020203000000050300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0400000000030000050000000003000003000002020100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0400000000030000020102000003000003000000000300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
